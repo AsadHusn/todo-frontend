@@ -1,3 +1,4 @@
+import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect, useReducer, useCallback } from "react";
 import Add from "./Add";
 import List from "./List";
@@ -30,15 +31,16 @@ export default () => {
         setEdit,
       }}
     >
-      <main
-        style={{
-          width: 400,
-          margin: "auto",
-        }}
-      >
-        <h1>todos</h1>
+      <header className="navbar bg-body-tertiary text-center d-block">
+        <span className="navbar-brand h1 fs-2">Todos</span>
+      </header>
+      <main className="container my-4">
         <Add AddTodo={addTodo} />
-        {todos.length ? <List todos={todos} /> : "List is Empty"}
+        {todos.length ? (
+          <List todos={todos} />
+        ) : (
+          <p className="display-6 text-center mt-4">List is Empty</p>
+        )}
       </main>
     </TodoContext.Provider>
   );

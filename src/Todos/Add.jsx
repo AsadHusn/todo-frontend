@@ -16,9 +16,18 @@ export default () => {
     inputRef.current.value = "";
   };
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" ref={inputRef} required />
-      <input type="submit" value="Add Todo" />
+    <form onSubmit={handleSubmit} className="input-group">
+      <input
+        type="text"
+        ref={inputRef}
+        required
+        placeholder="Todo..."
+        autoFocus
+        className="form-control"
+      />
+      <div className="input-group-append">
+        <input type="submit" value="Add Todo" className="btn btn-primary" />
+      </div>
     </form>
   );
 };
