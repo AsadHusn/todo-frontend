@@ -1,36 +1,57 @@
+import toast from "react-hot-toast";
 import actions from "./actions";
 import fetch from "./fetch";
 
 const getTodos = async (dispatch) => {
-  const todos = await fetch("/todo", "GET");
-  dispatch({
-    type: actions.GET,
-    payload: todos,
-  });
+  try {
+    const todos = await fetch("/todo", "GET");
+    dispatch({
+      type: actions.GET,
+      payload: todos,
+    });
+  } catch (error) {
+    toast.error("Failed to fetch todos");
+  }
 };
 
 const addTodo = async (dispatch, todo) => {
-  const id = await fetch("/todo", "POST", todo);
-  dispatch({
-    type: actions.ADD,
-    payload: { id, ...todo },
-  });
+  try {
+    const id = await fetch("/todo", "POST", todo);
+    dispatch({
+      type: actions.ADD,
+      payload: { id, ...todo },
+    });
+    toast.success("Added successfully");
+  } catch (error) {
+    console.log("my error = ", error.message);
+    toast.error("Failed to add new todo");
+  }
 };
 
 const deleteTodo = async (dispatch, id) => {
-  await fetch("/todo/" + id, "DELETE");
-  dispatch({
-    type: actions.DELETE,
-    payload: id,
-  });
+  try {
+    await fetch("/todo/" + id, "DELETE");
+    dispatch({
+      type: actions.DELETE,
+      payload: id,
+    });
+    toast.success("Deleted successfully");
+  } catch (error) {
+    toast.error("Failed to delete todo");
+  }
 };
 
 const updateTodo = async (dispatch, todo) => {
-  await fetch("/todo/" + todo.id, "PUT", todo);
-  dispatch({
-    type: actions.UPDATE,
-    payload: todo,
-  });
+  try {
+    await fetch("/todo/" + todo.id, "PUT", todo);
+    dispatch({
+      type: actions.UPDATE,
+      payload: todo,
+    });
+    toast.success("Updated successfully");
+  } catch (error) {
+    toast.error("Failed to update todo");
+  }
 };
 
 export default {

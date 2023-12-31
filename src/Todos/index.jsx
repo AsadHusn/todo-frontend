@@ -1,5 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect, useReducer, useCallback } from "react";
+import { Toaster } from "react-hot-toast";
 import Add from "./Add";
 import List from "./List";
 import TodoContext from "./context";
@@ -31,6 +32,7 @@ export default () => {
         setEdit,
       }}
     >
+      <Toaster position="bottom-right" />
       <header className="navbar bg-body-tertiary text-center d-block">
         <span className="navbar-brand h1 fs-2">Todos</span>
       </header>
