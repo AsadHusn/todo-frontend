@@ -1,6 +1,6 @@
-import actions from "./actions";
+import actions from "../actions";
 
-export default (state, action) => {
+export default (state = [], action) => {
   switch (action.type) {
     case actions.GET:
       return action.payload;

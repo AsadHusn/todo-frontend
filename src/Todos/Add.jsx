@@ -1,18 +1,20 @@
 import { useRef } from "react";
-import { useTodoContext } from "./context";
+import { useDispatch } from "react-redux";
+import { addTodo } from "./redux/actions/todos";
 
 export default () => {
-  const { addTodo } = useTodoContext();
+  const dispatch = useDispatch();
   const inputRef = useRef();
   const handleSubmit = (e) => {
     e.preventDefault();
     const title = inputRef.current.value.trim();
     if (!title) return;
-    addTodo({
-      title,
-      completed: false,
-    });
-
+    dispatch(
+      addTodo({
+        title,
+        completed: false,
+      })
+    );
     inputRef.current.value = "";
   };
   return (

@@ -1,7 +1,19 @@
-import { useTodoContext } from "./context";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteTodo, updateTodo } from "./redux/actions/todos";
 
 export default ({ todo }) => {
-  const { edit, setEdit, updateTodo, deleteTodo } = useTodoContext();
+  const edit = useSelector((state) => state.edit);
+
+  const dispatch = useDispatch();
+
+  const setEdit = (value) =>
+    dispatch({
+      type: "edit",
+      payload: value,
+    });
+
+  const handleUpdate = (todo) => dispatch(updateTodo(todo));
+  const handleDelete = (id) => dispatch(deleteTodo(id));
 
   return (
     <li className="list-group-item list-group-item-light">
@@ -15,7 +27,7 @@ export default ({ todo }) => {
                 className="form-check-input me-2"
                 checked={todo.completed}
                 onChange={(e) =>
-                  updateTodo({ ...todo, completed: e.target.checked })
+                  handleUpdate({ ...todo, completed: e.target.checked })
                 }
               />
               <label htmlFor={todo.id} className="form-check-label">
@@ -33,33 +45,31 @@ export default ({ todo }) => {
                 type="button"
                 value="Delete"
                 className="btn btn-sm btn-outline-danger"
-                onClick={() => deleteTodo(todo.id)}
+                onClick={() => handleDelete(todo.id)}
               />
             </div>
           </div>
         </>
       ) : (
-        <Edit todo={todo} />
+        <Edit todo={todo} setEdit={setEdit} handleUpdate={handleUpdate} />
       )}
     </li>
   );
 };
 
-const Edit = ({ todo }) => {
-  const { updateTodo, setEdit } = useTodoContext();
+const Edit = ({ todo, setEdit, handleUpdate }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const title = e.target.edit.value.trim();
     if (!title) return;
     if (title === todo.title) {
-      setEdit();
+      setEdit(false);
     } else {
       todo.title = title;
-      updateTodo(todo);
-      setEdit();
+      handleUpdate(todo);
+      setEdit(false);
     }
   };
-
   return (
     <form onSubmit={handleSubmit} className="d-flex align-items-center gap-2">
       <input
@@ -74,7 +84,7 @@ const Edit = ({ todo }) => {
         type="button"
         value="Cancel"
         className="btn btn-sm btn-outline-danger"
-        onClick={() => setEdit()}
+        onClick={() => setEdit(false)}
       />
       <input
         type="submit"
